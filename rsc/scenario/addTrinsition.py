@@ -6,10 +6,20 @@ class AddTransition(Scenario):
     name = Scenario.const.ClassName.addTransition
 
     @staticmethod
+    def _try_calc(text: str) -> str:
+
+        try:
+            return eval(text)
+        except:
+            return text
+
+    @staticmethod
     def _parse_transition(text: str) -> dict:
         split_text = text.split(",")
         value = split_text[0].lstrip().rstrip()
         comment = split_text[1].lstrip().rstrip()
+        value = AddTransition._try_calc(value)
+
         try:
             value = int(value)
         except:
