@@ -1,6 +1,6 @@
 
 
-from main.familyBudget import FamilyBudget
+from mainFiles.familyBudget import FamilyBudget
 
 familyBudget = FamilyBudget()
 

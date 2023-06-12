@@ -1,5 +1,5 @@
 
-from main.familyBudget import FamilyBudget
+from mainFiles.familyBudget import FamilyBudget
 from data.apiConfig import TELEGRAM_TOKEN
 import telebot
 from telebot import types
