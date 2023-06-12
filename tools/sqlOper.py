@@ -16,7 +16,7 @@ _first = _const.ClassName.first
 
 class SqlOperation:
 
-    def __init__(self, path="../data/database.db"):
+    def __init__(self, path="data/database.db"):
         self._connection = sqlite3.connect(path)
         self._cursor = self._connection.cursor()
         self._create_all_tables()
