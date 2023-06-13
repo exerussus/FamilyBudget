@@ -12,7 +12,7 @@ _scenario = _const.ColumnName.scenario
 _bank = _const.TableName.bank
 _cash = _const.TableName.cash
 _user = _const.TableName.user
-_first = _const.ClassName.first
+_first = _const.ClassName.choice
 _classification = _const.ColumnName.classification
 
 

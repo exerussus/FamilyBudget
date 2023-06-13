@@ -1,5 +1,4 @@
 from typing import Type
-
 from tools.sqlOper import SqlOperation
 from rsc.const import Const
 from rsc.scenario.first import First
