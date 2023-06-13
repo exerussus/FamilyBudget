@@ -16,7 +16,7 @@ class Choice(Scenario):
                            "2000, подарок от бабушки"]
         if Choice.check_in_list_word(text, choice_words[Choice.const.KeyName.balance]):
             Choice.reset_user_status(user_id)
-            return f"{Choice.sql.get_current_balance()} \n {Choice.sql.get_transitions_count()}"
+            return f"{Choice.sql.get_transitions_count()}"
         elif Choice.check_in_list_word(text, choice_words[Choice.const.KeyName.transition]):
             Choice.set_user_status(user_id, Choice.const.ClassName.addTransition)
             return f"Введите транзакцию, пример: {random_choice(_random_example)}"

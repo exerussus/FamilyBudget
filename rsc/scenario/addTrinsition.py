@@ -37,8 +37,7 @@ class AddTransition(Scenario):
             AddTransition.reset_user_status(user_id)
             if value != 0:
                 AddTransition.sql.add_transition(user_id, value, comment)
-                balance = AddTransition.sql.get_current_balance()
-                return f"Баланс: {balance}"
+                return f"{AddTransition.sql.get_transitions_count()}"
             else:
                 return comment
         except:
