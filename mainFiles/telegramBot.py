@@ -30,6 +30,8 @@ class TeleBot:
                 btn7 = types.KeyboardButton("Другое")
                 markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
                 self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
+            elif "Введите транзакцию" in answer:
+                self._bot.send_message(message.from_user.id, answer, reply_markup=types.ReplyKeyboardRemove())
             else:
                 self._bot.send_message(message.from_user.id, answer, reply_markup=types.ReplyKeyboardRemove())
                 markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
