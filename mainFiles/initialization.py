@@ -31,10 +31,8 @@ def run():
         if not os.path.exists("data/private"):
             os.makedirs("data/private")
         with open("data/private/privateConfig.py", "w") as f:
-            f.write("from rsc.container import Container\n")
-            f.write("container = Container()\n")
-            f.write("FIRST = {container.ColumnName.id: 0, container.ColumnName.name: ''}\n")
-            f.write("SECOND = {container.ColumnName.id: 0, container.ColumnName.name: ''}\n")
+            f.write("FIRST = {'id': 0, 'name': ''}\n")
+            f.write("SECOND = {'id': 0, 'name': ''}\n")
             f.write("TELEGRAM_TOKEN = ''\n")
             f.write("USER_LIST = [FIRST, SECOND]")
 

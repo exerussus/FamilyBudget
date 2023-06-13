@@ -30,6 +30,9 @@ class FamilyBudget:
         return scenario_class
 
     def run(self, user_id: int, text: str) -> str:
-        scenario_class = self._get_correct_scenario(user_id)
+        try:
+            scenario_class = self._get_correct_scenario(user_id)
+        except TypeError:
+            return "Пользователь не зарегистрирован."
         answer = scenario_class.run(user_id=user_id, text=text)
         return answer
