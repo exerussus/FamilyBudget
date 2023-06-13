@@ -4,6 +4,7 @@ from data.apiConfig import TELEGRAM_TOKEN
 import telebot
 from telebot import types
 from tools.debug import log
+from rsc.container import Container
 
 
 class TeleBot:
@@ -12,6 +13,7 @@ class TeleBot:
         self._familyBudget = FamilyBudget()
         self._bot = telebot.TeleBot(TELEGRAM_TOKEN, parse_mode=None)
         self.debug_mode = debug_mode
+        Container().Config.default_scenario = Container().ClassName.choice
 
     def log(self, text: str):
         log(text=text, debug_mode=self.debug_mode)

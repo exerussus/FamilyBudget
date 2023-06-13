@@ -3,7 +3,7 @@ from rsc.scenario.scenario import Scenario
 
 
 class AddTransition(Scenario):
-    name = Scenario.const.ClassName.addTransition
+    name = Scenario.container.ClassName.addTransition
 
     @staticmethod
     def _try_calc(text: str) -> str:
@@ -34,7 +34,7 @@ class AddTransition(Scenario):
         try:
             info_dict = AddTransition._parse_transition(text)
             value, comment = info_dict[AddTransition.value], info_dict[AddTransition.comment]
-            AddTransition.set_user_status(user_id, AddTransition.const.ClassName.classification)
+            AddTransition.set_user_status(user_id, AddTransition.container.ClassName.classification)
             if value != 0:
                 AddTransition.sql.save_cash(user_id, value, comment)
                 return "Введите категорию: "

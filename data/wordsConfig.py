@@ -1,5 +1,5 @@
 
-from rsc.const import Const
+from rsc.container import Container
 
 first_words = [
     "/money"
@@ -7,10 +7,10 @@ first_words = [
 
 choice_words = {
 
-    Const().KeyName.balance: [
+    Container().KeyName.balance: [
         "баланс", "1"
     ],
-    Const().KeyName.transition: [
+    Container().KeyName.transition: [
         "изменить", "транзакция", "изменение", "добавить", "2"
     ]
 

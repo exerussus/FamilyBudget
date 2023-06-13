@@ -1,10 +1,10 @@
 
 from data.private.privateConfig import TELEGRAM_TOKEN as TOKEN
 from data.private.privateConfig import ILYA_ID, BETH_ID
-from rsc.const import Const
+from rsc.container import Container
 
-user_id = Const().ColumnName.id
-user_name = Const().ColumnName.name
+user_id = Container().ColumnName.id
+user_name = Container().ColumnName.name
 
 
 INPUT_FUNCTION = input

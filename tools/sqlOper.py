@@ -1,19 +1,8 @@
-from rsc.const import Const
+from rsc.container import Container
 import sqlite3
 from datetime import datetime
 
-_const = Const()
-_id = _const.ColumnName.id
-_name = _const.ColumnName.name
-_value = _const.ColumnName.value
-_date = _const.ColumnName.date
-_comment = _const.ColumnName.comment
-_scenario = _const.ColumnName.scenario
-_bank = _const.TableName.bank
-_cash = _const.TableName.cash
-_user = _const.TableName.user
-_first = _const.ClassName.choice
-_classification = _const.ColumnName.classification
+container = Container()
 
 
 class SqlOperation:
@@ -29,81 +18,86 @@ class SqlOperation:
 
     def _create_all_tables(self):
         self._cursor.execute(
-            f"CREATE TABLE IF NOT EXISTS {_user} ("
-            f"{_id} INTEGER PRIMARY KEY, "
-            f"{_name} TEXT, "
-            f"{_scenario} TEXT)")
+            f"CREATE TABLE IF NOT EXISTS {container.TableName.user} ("
+            f"{container.ColumnName.id} INTEGER PRIMARY KEY, "
+            f"{container.ColumnName.name} TEXT, "
+            f"{container.ColumnName.scenario} TEXT)")
 
         self._cursor.execute(
-            f"CREATE TABLE IF NOT EXISTS {_bank} ("
-            f"{_id} INTEGER PRIMARY KEY, "
-            f"{_value} INTEGER, "
-            f"{_comment} TEXT, "
-            f"{_name} TEXT, "
-            f"{_classification} TEXT, "
-            f"{_date} TEXT)")
+            f"CREATE TABLE IF NOT EXISTS {container.TableName.bank} ("
+            f"{container.ColumnName.id} INTEGER PRIMARY KEY, "
+            f"{container.ColumnName.value} INTEGER, "
+            f"{container.ColumnName.comment} TEXT, "
+            f"{container.ColumnName.name} TEXT, "
+            f"{container.ColumnName.classification} TEXT, "
+            f"{container.ColumnName.date} TEXT)")
 
         self._cursor.execute(
-            f"CREATE TABLE IF NOT EXISTS {_cash} ("
-            f"{_id} INTEGER PRIMARY KEY, "
-            f"{_value} INTEGER, "
-            f"{_comment} TEXT)")
+            f"CREATE TABLE IF NOT EXISTS {container.TableName.cash} ("
+            f"{container.ColumnName.id} INTEGER PRIMARY KEY, "
+            f"{container.ColumnName.value} INTEGER, "
+            f"{container.ColumnName.comment} TEXT)")
 
     def add_user(self, user_id: int, user_name: str):
-        result = (user_id, user_name, _first)
-        self._cursor.execute(f"INSERT OR IGNORE INTO {_user} VALUES (?, ?, ?)", result)
+        result = (user_id, user_name, container.Config.default_scenario)
+        self._cursor.execute(f"INSERT OR IGNORE INTO {container.TableName.user} VALUES (?, ?, ?)", result)
         self._connection.commit()
 
     def save_cash(self, user_id: int, value: str, comment: str):
         result = (user_id, value, comment)
-        self._cursor.execute(f"INSERT OR IGNORE INTO {_cash} VALUES (?, ?, ?)", result)
+        self._cursor.execute(f"INSERT OR IGNORE INTO {container.TableName.cash} VALUES (?, ?, ?)", result)
         self._connection.commit()
         result = (value, comment, user_id)
-        self._cursor.execute(f"UPDATE {_cash} SET {_value} = ?, {_comment} = ? WHERE {_id} = ?", result)
+        self._cursor.execute(f"UPDATE {container.TableName.cash} SET {container.ColumnName.value} = ?, "
+                             f"{container.ColumnName.comment} = ? WHERE {container.ColumnName.id} = ?", result)
         self._connection.commit()
 
     def load_cash(self, user_id: int) -> (str, str):
-        self._cursor.execute(f"SELECT * FROM {_cash} WHERE {_id} = ?", (user_id,))
+        self._cursor.execute(f"SELECT * FROM {container.TableName.cash} "
+                             f"WHERE {container.ColumnName.id} = ?", (user_id,))
         result = self._cursor.fetchone()
         return result[1], result[2]
 
     def get_user_status(self, user_id: int):
-        self._cursor.execute(f"SELECT * FROM {_user} WHERE {_id} = ?", (user_id,))
+        self._cursor.execute(f"SELECT * FROM {container.TableName.user} "
+                             f"WHERE {container.ColumnName.id} = ?", (user_id,))
         result = self._cursor.fetchone()
         result_dict = {
-            _id: result[0],
-            _name: result[1],
-            _scenario: result[2],
+            container.ColumnName.id: result[0],
+            container.ColumnName.name: result[1],
+            container.ColumnName.scenario: result[2],
         }
         return result_dict
 
     def set_user_status(self, user_id: int, scenario: str):
         result = scenario, user_id,
-        self._cursor.execute(f"UPDATE {_user} SET {_scenario} = ? WHERE {_id} = ?", result)
+        self._cursor.execute(f"UPDATE {container.TableName.user} SET {container.ColumnName.scenario} = ? "
+                             f"WHERE {container.ColumnName.id} = ?", result)
         self._connection.commit()
 
     def add_transition(self, user_id: int, value: int, comment: str, classification: str):
-        self._cursor.execute(f"SELECT MAX(id) FROM {_bank}")
+        self._cursor.execute(f"SELECT MAX(id) FROM {container.TableName.bank}")
         max_id = self._cursor.fetchone()[0]
         new_id = 1 if max_id is None else max_id + 1
-        name = self.get_user_status(user_id)[_name]
+        name = self.get_user_status(user_id)[container.ColumnName.name]
         date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         result = new_id, value, comment, name, classification, date,
-        self._cursor.execute(f"INSERT OR IGNORE INTO {_bank} VALUES (?,?,?,?,?,?)", result)
+        self._cursor.execute(f"INSERT OR IGNORE INTO {container.TableName.bank} VALUES (?,?,?,?,?,?)", result)
         self._connection.commit()
 
     def get_current_balance(self):
-        self._cursor.execute(f'SELECT SUM({_value}) FROM {_bank};')
+        self._cursor.execute(f'SELECT SUM({container.ColumnName.value}) FROM {container.TableName.bank};')
         current_balance = self._cursor.fetchone()[0]
         return current_balance
 
     def delete_transition(self, transition_id: int):
-        query = f"DELETE FROM {_bank} WHERE {_id} = {transition_id}"
+        query = f"DELETE FROM {container.TableName.bank} WHERE {container.ColumnName.id} = {transition_id}"
         self._cursor.execute(query)
         self._connection.commit()
 
     def get_transitions_count(self, count=10):
-        self._cursor.execute(f"SELECT * FROM {_bank} ORDER BY {_id} DESC LIMIT {count}")
+        self._cursor.execute(f"SELECT * FROM {container.TableName.bank} "
+                             f"ORDER BY {container.ColumnName.id} DESC LIMIT {count}")
         rows = self._cursor.fetchall()
         text = [f"Баланс: {self.get_current_balance()}"]
         number_count = 0

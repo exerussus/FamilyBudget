@@ -4,7 +4,7 @@ from random import choice as random_choice
 
 
 class Choice(Scenario):
-    name = Scenario.const.ClassName.choice
+    name = Scenario.container.ClassName.choice
 
     @staticmethod
     def run(user_id: int, text: str) -> str:
@@ -14,11 +14,11 @@ class Choice(Scenario):
                            "500, найдены в кладовой",
                            "-125, мороженое",
                            "2000, подарок от бабушки"]
-        if Choice.check_in_list_word(text, choice_words[Choice.const.KeyName.balance]):
+        if Choice.check_in_list_word(text, choice_words[Choice.container.KeyName.balance]):
             Choice.reset_user_status(user_id)
             return f"{Choice.sql.get_transitions_count()}"
-        elif Choice.check_in_list_word(text, choice_words[Choice.const.KeyName.transition]):
-            Choice.set_user_status(user_id, Choice.const.ClassName.addTransition)
+        elif Choice.check_in_list_word(text, choice_words[Choice.container.KeyName.transition]):
+            Choice.set_user_status(user_id, Choice.container.ClassName.addTransition)
             return f"Введите транзакцию, пример: {random_choice(_random_example)}"
         else:
             Choice.reset_user_status(user_id)

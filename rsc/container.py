@@ -1,10 +1,10 @@
 
 
-class Const:
+class Container:
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
-            cls.instance = Constant()
+            cls.instance = Settings()
         return cls.instance
 
 
@@ -37,8 +37,14 @@ class ConstClassName:
     classification = "classification"
 
 
-class Constant:
+class SettingConfig:
+    default_scenario = ConstClassName.first
+
+
+class Settings:
     TableName = ConstTableName
     ColumnName = ConstColumnName
     KeyName = ConstKeyName
     ClassName = ConstClassName
+    Config = SettingConfig
+

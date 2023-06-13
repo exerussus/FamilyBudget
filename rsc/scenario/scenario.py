@@ -1,12 +1,12 @@
 
-from rsc.const import Const
+from rsc.container import Container
 from tools.sqlOper import Sql
 
 
 class Scenario:
-    const = Const()
-    value = const.ColumnName.value
-    comment = const.ColumnName.comment
+    container = Container()
+    value = container.ColumnName.value
+    comment = container.ColumnName.comment
     sql = Sql
 
     @staticmethod
@@ -15,8 +15,7 @@ class Scenario:
 
     @staticmethod
     def reset_user_status(user_id: int):
-        Sql.set_user_status(user_id, Scenario.const.ClassName.choice)
-
+        Sql.set_user_status(user_id, Scenario.container.Config.default_scenario)
 
     @staticmethod
     def set_user_status(user_id: int, scenario: str):
