@@ -5,6 +5,7 @@ from rsc.const import Const
 from rsc.scenario.first import First
 from rsc.scenario.addTrinsition import AddTransition
 from rsc.scenario.choice import Choice
+from rsc.scenario.classification import Classification
 
 
 class FamilyBudget:
@@ -19,6 +20,8 @@ class FamilyBudget:
                 scenario_class = AddTransition
             case Choice.name:
                 scenario_class = Choice
+            case Classification.name:
+                scenario_class = Classification
             case _:
                 scenario_class = First
 

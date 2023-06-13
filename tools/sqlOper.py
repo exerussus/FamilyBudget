@@ -10,8 +10,10 @@ _date = _const.ColumnName.date
 _comment = _const.ColumnName.comment
 _scenario = _const.ColumnName.scenario
 _bank = _const.TableName.bank
+_cash = _const.TableName.cash
 _user = _const.TableName.user
 _first = _const.ClassName.first
+_classification = _const.ColumnName.classification
 
 
 class SqlOperation:
@@ -38,12 +40,32 @@ class SqlOperation:
             f"{_value} INTEGER, "
             f"{_comment} TEXT, "
             f"{_name} TEXT, "
+            f"{_classification} TEXT, "
             f"{_date} TEXT)")
+
+        self._cursor.execute(
+            f"CREATE TABLE IF NOT EXISTS {_cash} ("
+            f"{_id} INTEGER PRIMARY KEY, "
+            f"{_value} INTEGER, "
+            f"{_comment} TEXT)")
 
     def add_user(self, user_id: int, user_name: str):
         result = (user_id, user_name, _first)
         self._cursor.execute(f"INSERT OR IGNORE INTO {_user} VALUES (?, ?, ?)", result)
         self._connection.commit()
+
+    def save_cash(self, user_id: int, value: str, comment: str):
+        result = (user_id, value, comment)
+        self._cursor.execute(f"INSERT OR IGNORE INTO {_cash} VALUES (?, ?, ?)", result)
+        self._connection.commit()
+        result = (value, comment, user_id)
+        self._cursor.execute(f"UPDATE {_cash} SET {_value} = ?, {_comment} = ? WHERE {_id} = ?", result)
+        self._connection.commit()
+
+    def load_cash(self, user_id: int) -> (str, str):
+        self._cursor.execute(f"SELECT * FROM {_cash} WHERE {_id} = ?", (user_id,))
+        result = self._cursor.fetchone()
+        return result[1], result[2]
 
     def get_user_status(self, user_id: int):
         self._cursor.execute(f"SELECT * FROM {_user} WHERE {_id} = ?", (user_id,))
@@ -60,14 +82,14 @@ class SqlOperation:
         self._cursor.execute(f"UPDATE {_user} SET {_scenario} = ? WHERE {_id} = ?", result)
         self._connection.commit()
 
-    def add_transition(self, user_id: int, value: int, comment: str):
+    def add_transition(self, user_id: int, value: int, comment: str, classification: str):
         self._cursor.execute(f"SELECT MAX(id) FROM {_bank}")
         max_id = self._cursor.fetchone()[0]
         new_id = 1 if max_id is None else max_id + 1
         name = self.get_user_status(user_id)[_name]
         date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-        result = new_id, value, comment, name, date,
-        self._cursor.execute(f"INSERT OR IGNORE INTO {_bank} VALUES (?,?,?,?,?)", result)
+        result = new_id, value, comment, name, classification, date,
+        self._cursor.execute(f"INSERT OR IGNORE INTO {_bank} VALUES (?,?,?,?,?,?)", result)
         self._connection.commit()
 
     def get_current_balance(self):
@@ -87,7 +109,7 @@ class SqlOperation:
         number_count = 0
         for element in rows:
             number_count += 1
-            text.append(f"{number_count}.  {element[1]},  {element[2]},  {element[3]},  {element[4]} ")
+            text.append(f"{number_count}.  {element[1]},  {element[2]},  {element[3]},  {element[4]}, {element[5]} ")
         return "\n".join(text)
 
 
@@ -113,9 +135,9 @@ class Sql:
         _sqlClass.close()
 
     @staticmethod
-    def add_transition(user_id: int, value: int, comment: str):
+    def add_transition(user_id: int, value: int, comment: str, classification: str):
         _sqlClass = SqlOperation()
-        _sqlClass.add_transition(user_id=user_id, value=value, comment=comment)
+        _sqlClass.add_transition(user_id=user_id, value=value, comment=comment, classification=classification)
         _sqlClass.close()
 
     @staticmethod
@@ -137,3 +159,16 @@ class Sql:
         transitions = _sqlClass.get_transitions_count(count)
         _sqlClass.close()
         return transitions
+
+    @staticmethod
+    def save_cash(user_id: int, value: str, comment: str):
+        _sqlClass = SqlOperation()
+        _sqlClass.save_cash(user_id=user_id, value=value, comment=comment)
+        _sqlClass.close()
+
+    @staticmethod
+    def load_cash(user_id: int) -> (str, str):
+        _sqlClass = SqlOperation()
+        cash = _sqlClass.load_cash(user_id=user_id)
+        _sqlClass.close()
+        return cash

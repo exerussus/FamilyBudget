@@ -34,10 +34,10 @@ class AddTransition(Scenario):
         try:
             info_dict = AddTransition._parse_transition(text)
             value, comment = info_dict[AddTransition.value], info_dict[AddTransition.comment]
-            AddTransition.reset_user_status(user_id)
+            AddTransition.set_user_status(user_id, AddTransition.const.ClassName.classification)
             if value != 0:
-                AddTransition.sql.add_transition(user_id, value, comment)
-                return f"{AddTransition.sql.get_transitions_count()}"
+                AddTransition.sql.save_cash(user_id, value, comment)
+                return f"Введите категорию: "
             else:
                 return comment
         except:

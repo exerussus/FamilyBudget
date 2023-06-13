@@ -15,11 +15,13 @@ class ConstColumnName:
     date = "date"
     name = "name"
     scenario = "scenario"
+    classification = "classification"
 
 
 class ConstTableName:
     user = "user"
     bank = "bank"
+    cash = "cash"
 
 
 class ConstKeyName:
@@ -32,6 +34,7 @@ class ConstClassName:
     addTransition = "addTransition"
     first = "first"
     choice = "choice"
+    classification = "classification"
 
 
 class Constant:
