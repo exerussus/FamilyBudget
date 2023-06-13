@@ -15,7 +15,7 @@ class Scenario:
 
     @staticmethod
     def reset_user_status(user_id: int):
-        Sql.set_user_status(user_id, Scenario.const.ClassName.choice)
+        Sql.set_user_status(user_id, Scenario.const.ClassName.first)
 
 
     @staticmethod
