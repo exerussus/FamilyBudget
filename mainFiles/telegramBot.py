@@ -19,12 +19,6 @@ class TeleBot:
             answer = self._familyBudget.run(user_id=user_id, text=text)
             if answer is None:
                 self._bot.send_message(message.from_user.id, "Команда не распознана.")
-            elif answer == "Выберите действие: \n1. Баланс\n2. Добавить транзакцию":
-                markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-                btn1 = types.KeyboardButton("Баланс")
-                btn2 = types.KeyboardButton("Транзакция")
-                markup.add(btn1, btn2)
-                self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
             elif answer == "Введите категорию: ":
                 markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
                 btn1 = types.KeyboardButton("Еда")
@@ -38,6 +32,11 @@ class TeleBot:
                 self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
             else:
                 self._bot.send_message(message.from_user.id, answer, reply_markup=types.ReplyKeyboardRemove())
+                markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+                btn1 = types.KeyboardButton("Баланс")
+                btn2 = types.KeyboardButton("Транзакция")
+                markup.add(btn1, btn2)
+                self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
         self._bot.polling(none_stop=True, interval=1)
 
 
