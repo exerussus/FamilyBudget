@@ -37,7 +37,7 @@ class AddTransition(Scenario):
             AddTransition.set_user_status(user_id, AddTransition.const.ClassName.classification)
             if value != 0:
                 AddTransition.sql.save_cash(user_id, value, comment)
-                return f"Введите категорию: "
+                return "Введите категорию: "
             else:
                 return comment
         except:

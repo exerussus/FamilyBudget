@@ -25,6 +25,17 @@ class TeleBot:
                 btn2 = types.KeyboardButton("Транзакция")
                 markup.add(btn1, btn2)
                 self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
+            elif answer == "Введите категорию: ":
+                markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+                btn1 = types.KeyboardButton("Еда")
+                btn2 = types.KeyboardButton("Ремонт")
+                btn3 = types.KeyboardButton("Одежда")
+                btn4 = types.KeyboardButton("Машина")
+                btn5 = types.KeyboardButton("Квартира")
+                btn6 = types.KeyboardButton("ХОЗ")
+                btn7 = types.KeyboardButton("Другое")
+                markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
+                self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
             else:
                 self._bot.send_message(message.from_user.id, answer, reply_markup=types.ReplyKeyboardRemove())
         self._bot.polling(none_stop=True, interval=1)
