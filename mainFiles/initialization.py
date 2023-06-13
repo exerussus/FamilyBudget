@@ -1,9 +1,58 @@
+import os
 
-from data.apiConfig import USER_LIST
-from tools.sqlOper import Sql
-from rsc.container import Container
 
-sql = Sql()
+def run():
 
-for user in USER_LIST:
-    sql.add_user(user[Container().ColumnName.id], user[Container().ColumnName.name])
+    install = '1'
+    init = '2'
+    uninstall = '3'
+    escape = '0'
+
+
+    def get_choice():
+        _choice = input("1. Установить приватные конфиги (data/private/privateConfig.py)\n"
+                       "2. Проинициализировать настроенные конфиги\n"
+                       "3. Удалить все настройки, конфиги и базу данных\n"
+                       "0. Выйти\n"
+                        "Ввод (1\\2\\3\\0): ")
+
+        if _choice == escape:
+            exit(0)
+        else:
+            if _choice not in [install, init, uninstall]:
+                return get_choice()
+            else:
+                return _choice
+
+
+    choice = get_choice()
+
+    if choice == install:
+        if not os.path.exists("data/private"):
+            os.makedirs("data/private")
+        with open("data/private/privateConfig.py", "w") as f:
+            f.write("from rsc.container import Container\n")
+            f.write("container = Container()\n")
+            f.write("FIRST = {container.ColumnName.id: 0, container.ColumnName.name: ''}\n")
+            f.write("SECOND = {container.ColumnName.id: 0, container.ColumnName.name: ''}\n")
+            f.write("TELEGRAM_TOKEN = ''\n")
+            f.write("USER_LIST = [FIRST, SECOND]")
+
+    elif choice == init:
+
+        from data.apiConfig import USER_LIST
+        from tools.sqlOper import Sql
+        from rsc.container import Container
+
+        sql = Sql()
+        for user in USER_LIST:
+            sql.add_user(user[Container().ColumnName.id], user[Container().ColumnName.name])
+
+    elif choice == uninstall:
+        if os.path.exists("data/private/privateConfig.py"):
+            os.remove("data/private/privateConfig.py")
+        if os.path.exists("data/database.db"):
+            os.remove("data/database.db")
+
+    else:
+        input("Непредвиденная ошибка...")
