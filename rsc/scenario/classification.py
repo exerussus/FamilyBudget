@@ -3,7 +3,7 @@ from rsc.scenario.scenario import Scenario
 
 
 class Classification(Scenario):
-    name = Scenario.container.ClassName.classification
+    name = Scenario.container.ScenarioName.classification
 
     @staticmethod
     def run(user_id: int, text: str) -> str:

@@ -28,23 +28,27 @@ class ConstKeyName:
     text = "text"
     balance = "balance"
     transition = "transition"
+    statisticMonth = "statisticMonth"
+    statisticYear = "statisticYear"
 
 
-class ConstClassName:
+class ConstScenarioName:
     addTransition = "addTransition"
     first = "first"
     choice = "choice"
     classification = "classification"
+    statistic = "statistic"
+    statisticChoice = "statisticChoice"
 
 
 class SettingConfig:
-    default_scenario = ConstClassName.first
+    default_scenario = ConstScenarioName.first
 
 
 class Settings:
     TableName = ConstTableName
     ColumnName = ConstColumnName
     KeyName = ConstKeyName
-    ClassName = ConstClassName
+    ScenarioName = ConstScenarioName
     Config = SettingConfig
 

@@ -106,8 +106,29 @@ class SqlOperation:
             text.append(f"{number_count}.  {element[1]},  {element[2]},  {element[3]},  {element[4]}, {element[5]} ")
         return "\n".join(text)
 
+    def get_month_statistic(self, user_id: int):
+        pass
+
+    def get_year_statistic(self, user_id: int):
+        pass
+
 
 class Sql:
+
+    @staticmethod
+    def get_month_statistic(user_id: int):
+        _sqlClass = SqlOperation()
+        statistic = _sqlClass.get_month_statistic(user_id=user_id)
+        _sqlClass.close()
+        return statistic
+
+    @staticmethod
+    def get_year_statistic(user_id: int):
+        _sqlClass = SqlOperation()
+        statistic = _sqlClass.get_year_statistic(user_id=user_id)
+        _sqlClass.close()
+        return statistic
+
 
     @staticmethod
     def add_user(user_id: int, user_name: str):

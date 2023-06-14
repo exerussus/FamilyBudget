@@ -13,7 +13,7 @@ class TeleBot:
         self._familyBudget = FamilyBudget()
         self._bot = telebot.TeleBot(TELEGRAM_TOKEN, parse_mode=None)
         self.debug_mode = debug_mode
-        Container().Config.default_scenario = Container().ClassName.choice
+        Container().Config.default_scenario = Container().ScenarioName.choice
 
     def log(self, text: str):
         log(text=text, debug_mode=self.debug_mode)

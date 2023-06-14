@@ -22,7 +22,7 @@ class FamilyBudget:
             case Classification.name:
                 scenario_class = Classification
             case _:
-                if Container().Config.default_scenario == Container().ClassName.first:
+                if Container().Config.default_scenario == Container().ScenarioName.first:
                     scenario_class = First
                 else:
                     scenario_class = Choice
