@@ -31,12 +31,12 @@ def run():
         if not os.path.exists("data/private"):
             os.makedirs("data/private")
         with open("data/private/privateConfig.py", "w") as f:
-            f.write("FIRST = {'id': 0, 'name': ''}\n")
+            f.write("\n\nFIRST = {'id': 0, 'name': ''}\n")
             f.write("SECOND = {'id': 0, 'name': ''}\n")
             f.write("TELEGRAM_TOKEN = ''\n")
-            f.write("USER_LIST = [FIRST, SECOND]")
+            f.write("USER_LIST = [FIRST, SECOND]\n")
             f.write('CLASSIFICATION_LIST = ["Еда", "Машина", "Ремонт", '
-                    '"Одежда", "Квартира", "ХОЗЫ", "Другое"]')
+                    '"Одежда", "Квартира", "ХОЗЫ", "Другое"]\n')
 
     elif choice == init:
 
