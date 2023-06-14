@@ -61,3 +61,4 @@ Container().Config.default_scenario = Container().ClassName.choice
 
 ## To do
 - [ ] Создать отчет за месяц\год по категориям
+- [ ] Создать конфиги для настройки шаблонов по категориям
