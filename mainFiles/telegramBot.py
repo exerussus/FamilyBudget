@@ -1,6 +1,6 @@
 
 from mainFiles.familyBudget import FamilyBudget
-from data.apiConfig import TELEGRAM_TOKEN
+from data.apiConfig import TELEGRAM_TOKEN, CLASSIFICATION_LIST
 import telebot
 from telebot import types
 from tools.debug import log
@@ -31,14 +31,12 @@ class TeleBot:
             elif answer == "Введите категорию: ":
                 self.log(f"{user_id}: Ожидание выбора категории...")
                 markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-                btn1 = types.KeyboardButton("Еда")
-                btn2 = types.KeyboardButton("Ремонт")
-                btn3 = types.KeyboardButton("Одежда")
-                btn4 = types.KeyboardButton("Машина")
-                btn5 = types.KeyboardButton("Квартира")
-                btn6 = types.KeyboardButton("ХОЗ")
-                btn7 = types.KeyboardButton("Другое")
-                markup.add(btn1, btn2, btn3, btn4, btn5, btn6, btn7)
+
+                button_list = []
+                for classification in CLASSIFICATION_LIST:
+                    button_list.append(types.KeyboardButton(classification))
+                button_tuple = tuple(button_list)
+                markup.add(*button_tuple)
                 self._bot.send_message(message.from_user.id, answer, reply_markup=markup)
             elif "Введите транзакцию" in answer:
                 self.log(f"{user_id}: Ожидание ввода транзакции...")

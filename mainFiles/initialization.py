@@ -35,6 +35,8 @@ def run():
             f.write("SECOND = {'id': 0, 'name': ''}\n")
             f.write("TELEGRAM_TOKEN = ''\n")
             f.write("USER_LIST = [FIRST, SECOND]")
+            f.write('CLASSIFICATION_LIST = ["Еда", "Машина", "Ремонт", '
+                    '"Одежда", "Квартира", "ХОЗЫ", "Другое"]')
 
     elif choice == init:
 
